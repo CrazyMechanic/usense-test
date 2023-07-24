@@ -10,7 +10,9 @@ export class FormComponent {
   formLabels = FORM_LABELS;
   formPlaceholder = FORM_PLACEHOLDERS;
 
+  name: string = '';
   password: string = '';
+
   isWeakPassword: boolean = false;
   isMediumPassword: boolean = false;
   isStrongPassword: boolean = false;
@@ -36,6 +38,9 @@ export class FormComponent {
     } else {
       this.isMediumPassword = true;
     }
+  }
 
+  isValidForm(): boolean {
+    return this.name.trim() !== '' && this.isStrongPassword;
   }
 }
