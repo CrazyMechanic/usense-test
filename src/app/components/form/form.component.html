@@ -9,12 +9,16 @@
     <input (input)="checkPasswordStrength($event)" [(ngModel)]="password"
            id="password" placeholder="{{formPlaceholder.password}}" type="password">
 
-    <div>
-      <div [ngClass]="{ 'red': isWeakPassword, 'yellow': isMediumPassword, 'green': isStrongPassword }">Слабий</div>
-      <div [ngClass]="{ 'red': isWeakPassword, 'yellow': isMediumPassword, 'green': isStrongPassword }">Середній</div>
-      <div [ngClass]="{ 'red': isWeakPassword, 'green': isStrongPassword }">Надійний</div>
+    <div class="strength">
+      <div [ngClass]="{ 'red': isWeakPassword, 'yellow': isMediumPassword, 'green': isStrongPassword }">Easy</div>
+      <div [ngClass]="{ 'red': isWeakPassword, 'yellow': isMediumPassword, 'green': isStrongPassword }">Medium</div>
+      <div [ngClass]="{ 'red': isWeakPassword, 'green': isStrongPassword }">Strong</div>
     </div>
   </div>
 
-  <button [disabled]="!isValidForm()" type="submit">Save</button>
+  <button (click)="showSuccess()" [disabled]="!isValidForm()" class="btn-submit" type="submit">Save</button>
+
+  <div *ngIf="isFormSubmitted" class="success-icon">
+    <img alt="img-submit" class="img-submit" src="../../../assets/img/submit.png">
+  </div>
 </div>

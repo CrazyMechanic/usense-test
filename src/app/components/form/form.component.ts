@@ -17,6 +17,8 @@ export class FormComponent {
   isMediumPassword: boolean = false;
   isStrongPassword: boolean = false;
 
+  isFormSubmitted: boolean = false;
+
   constructor() {
   }
 
@@ -43,4 +45,17 @@ export class FormComponent {
   isValidForm(): boolean {
     return this.name.trim() !== '' && this.isStrongPassword;
   }
+
+  showSuccess() {
+    this.isFormSubmitted = true;
+    setTimeout(() => {
+      this.isFormSubmitted = false;
+      this.name = '';
+      this.password = '';
+      this.isWeakPassword = false;
+      this.isMediumPassword = false;
+      this.isStrongPassword = false;
+    }, 1500);
+  }
+
 }
