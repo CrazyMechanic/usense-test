@@ -1,24 +1,18 @@
-<form [formGroup]="userForm">
-  <div class="input-container">
+<div class="input-container">
+  <div class="input-group">
     <label for="name">{{formLabels.name}}</label>
-    <input (blur)="onValueChanged()"
-           [ngClass]="{'is-valid': name.valid,
-                       'is-invalid': name.invalid && (name.touched || name.dirty)}"
-           formControlName="name" id="name" placeholder="{{formPlaceholder.name}}" type="text">
-
-    <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">{{formErrors.name}}</div>
+    <input id="name" placeholder="{{formPlaceholder.name}}" type="text">
   </div>
 
-  <div class="input-container">
+  <div class="input-group">
     <label for="password">{{formLabels.password}}</label>
-    <input formControlName="password" id="password" placeholder="{{formPlaceholder.password}}">
+    <input (input)="checkPasswordStrength($event)" [(ngModel)]="password"
+           id="password" placeholder="{{formPlaceholder.password}}" type="password">
 
-    <div></div>
-
-    <div></div>
-
-    <div></div>
-
-    <div></div>
+    <div>
+      <div [ngClass]="{ 'red': isWeakPassword, 'yellow': isMediumPassword, 'green': isStrongPassword }">Слабий</div>
+      <div [ngClass]="{ 'red': isWeakPassword, 'yellow': isMediumPassword, 'green': isStrongPassword }">Середній</div>
+      <div [ngClass]="{ 'red': isWeakPassword, 'green': isStrongPassword }">Надійний</div>
+    </div>
   </div>
-</form>
+</div>
