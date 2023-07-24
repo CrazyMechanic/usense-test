@@ -1,9 +1,12 @@
 <form [formGroup]="userForm">
   <div class="input-container">
     <label for="name">{{formLabels.name}}</label>
-    <input formControlName="name" id="name" placeholder="{{formPlaceholder.name}}">
+    <input (blur)="onValueChanged()"
+           [ngClass]="{'is-valid': name.valid,
+                       'is-invalid': name.invalid && (name.touched || name.dirty)}"
+           formControlName="name" id="name" placeholder="{{formPlaceholder.name}}" type="text">
 
-    <div></div>
+    <div *ngIf="name.invalid && (name.touched || name.dirty)" class="invalid-feedback">{{formErrors.name}}</div>
   </div>
 
   <div class="input-container">
