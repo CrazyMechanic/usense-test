@@ -1,14 +1,14 @@
-<form>
-  <div>
-    <label></label>
-    <input>
+<form [formGroup]="userForm">
+  <div class="input-container">
+    <label for="name">{{formLabels.name}}</label>
+    <input formControlName="name" id="name" placeholder="{{formPlaceholder.name}}">
 
     <div></div>
   </div>
 
-  <div>
-    <label></label>
-    <input>
+  <div class="input-container">
+    <label for="password">{{formLabels.password}}</label>
+    <input formControlName="password" id="password" placeholder="{{formPlaceholder.password}}">
 
     <div></div>
 
