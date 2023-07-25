@@ -1,24 +1,28 @@
 <div class="input-container">
   <div class="input-group">
-    <label for="name">{{formLabels.name}}</label>
-    <input [(ngModel)]="name" id="name" placeholder="{{formPlaceholder.name}}" type="text">
+    <label class="label" for="name">{{formLabels.name}}</label>
+    <input [(ngModel)]="name" class="input" id="name" placeholder="{{formPlaceholder.name}}" type="text">
   </div>
 
   <div class="input-group">
-    <label for="password">{{formLabels.password}}</label>
-    <input (input)="checkPasswordStrength($event)" [(ngModel)]="password"
+    <label class="label" for="password">{{formLabels.password}}</label>
+    <input (input)="checkPasswordStrength($event)" [(ngModel)]="password" class="input"
            id="password" placeholder="{{formPlaceholder.password}}" type="password">
 
     <div class="strength">
-      <div [ngClass]="{ 'red': isWeakPassword, 'yellow': isMediumPassword, 'green': isStrongPassword }">Easy</div>
-      <div [ngClass]="{ 'red': isWeakPassword, 'yellow': isMediumPassword, 'green': isStrongPassword }">Medium</div>
-      <div [ngClass]="{ 'red': isWeakPassword, 'green': isStrongPassword }">Strong</div>
+      <div [ngClass]="{ 'red': isWeakPassword, 'yellow': isMediumPassword, 'green': isStrongPassword }"
+           class="strength-items">Easy
+      </div>
+      <div [ngClass]="{ 'red': isWeakPassword, 'yellow': isMediumPassword, 'green': isStrongPassword }"
+           class="strength-items">Medium
+      </div>
+      <div [ngClass]="{ 'red': isWeakPassword, 'green': isStrongPassword }" class="strength-items">Strong</div>
     </div>
   </div>
 
   <button (click)="showSuccess()" [disabled]="!isValidForm()" class="btn-submit" type="submit">Save</button>
 
-  <div *ngIf="isFormSubmitted" class="success-icon">
-    <img alt="img-submit" class="img-submit" src="../../../assets/img/submit.png">
+  <div *ngIf="isFormSubmitted" class="success-msg">
+    <p class="success">Saving completed!</p>
   </div>
 </div>

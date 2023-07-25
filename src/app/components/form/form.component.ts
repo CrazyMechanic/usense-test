@@ -55,7 +55,7 @@ export class FormComponent {
       this.isWeakPassword = false;
       this.isMediumPassword = false;
       this.isStrongPassword = false;
-    }, 1500);
+    }, 2000);
   }
 
 }
