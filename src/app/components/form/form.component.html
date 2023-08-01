@@ -1,26 +1,44 @@
 <div class="input-container">
-  <div class="input-group">
-    <label class="label" for="name">{{formLabels.name}}</label>
-    <input [(ngModel)]="name" class="input" id="name" placeholder="{{formPlaceholder.name}}" type="text">
-  </div>
-
-  <div class="input-group">
-    <label class="label" for="password">{{formLabels.password}}</label>
-    <input (input)="checkPasswordStrength($event)" [(ngModel)]="password" class="input"
-           id="password" placeholder="{{formPlaceholder.password}}" type="password">
-
-    <div class="strength">
-      <div [ngClass]="{ 'red': isWeakPassword, 'yellow': isMediumPassword, 'green': isStrongPassword }"
-           class="strength-items">Easy
-      </div>
-      <div [ngClass]="{ 'red': isWeakPassword, 'yellow': isMediumPassword, 'green': isStrongPassword }"
-           class="strength-items">Medium
-      </div>
-      <div [ngClass]="{ 'red': isWeakPassword, 'green': isStrongPassword }" class="strength-items">Strong</div>
+  <form (ngSubmit)="showSuccess()" [formGroup]="form">
+    <div class="input-group">
+      <label class="label" for="name">{{formLabels.name}}</label>
+      <input class="input" formControlName="name" id="name" placeholder="{{formPlaceholder.name}}" type="text">
     </div>
-  </div>
 
-  <button (click)="showSuccess()" [disabled]="!isValidForm()" class="btn-submit" type="submit">Save</button>
+    <div class="input-group">
+      <label class="label" for="password">{{formLabels.password}}</label>
+      <input (input)="checkPasswordStrength()" class="input" formControlName="password"
+             id="password" placeholder="{{formPlaceholder.password}}" type="password">
+
+      <div class="strength">
+        <div [ngClass]="{
+              'red': (passwordStrength === 'Short' || passwordStrength === 'Weak'),
+              'yellow': passwordStrength === 'Medium',
+              'green': passwordStrength === 'Strong'
+             }"
+             [ngStyle]="{'color': form.get('password')?.value === '' ? 'gray' : '' }"
+             class="strength-items">Easy
+        </div>
+        <div [ngClass]="{
+              'red': passwordStrength === 'Short',
+              'yellow': passwordStrength === 'Medium',
+              'green': passwordStrength === 'Strong'
+             }"
+             [ngStyle]="{'color': form.get('password')?.value === '' ? 'gray' : '' }"
+             class="strength-items">Medium
+        </div>
+        <div [ngClass]="{
+              'red': passwordStrength === 'Short',
+              'green': passwordStrength === 'Strong'
+             }"
+             [ngStyle]="{'color': form.get('password')?.value === '' ? 'gray' : '' }"
+             class="strength-items">Strong
+        </div>
+      </div>
+    </div>
+
+    <button [disabled]="!isValidForm()" class="btn-submit" type="submit">Save</button>
+  </form>
 
   <div *ngIf="isFormSubmitted" class="success-msg">
     <p class="success">Saving completed!</p>

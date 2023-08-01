@@ -1,61 +1,75 @@
-import { Component } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 import { FORM_LABELS, FORM_PLACEHOLDERS } from '../../shared/form-data';
+import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { PasswordStrength, PasswordStrengthService } from '../../services/password.strength.service';
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => FormComponent),
+      multi: true,
+    },
+  ],
 })
-export class FormComponent {
+export class FormComponent implements ControlValueAccessor {
   formLabels = FORM_LABELS;
   formPlaceholder = FORM_PLACEHOLDERS;
 
-  name: string = '';
-  password: string = '';
-
-  isWeakPassword: boolean = false;
-  isMediumPassword: boolean = false;
-  isStrongPassword: boolean = false;
-
+  form: FormGroup;
   isFormSubmitted: boolean = false;
+  passwordStrength: PasswordStrength = 'Weak';
 
-  constructor() {
+  constructor(private passwordStrengthService: PasswordStrengthService) {
+    this.form = new FormGroup({
+      name: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
+    });
   }
 
-  checkPasswordStrength(event: Event) {
-    const password = (event.target as HTMLInputElement).value;
+  checkPasswordStrength() {
+    const password = this.form.get('password')?.value;
+    this.passwordStrength = this.passwordStrengthService.getPasswordStrength(password);
+    this.onChange(this.form.value);
+  }
 
-    const hasLetters = /[a-zA-Z]/.test(password);
-    const hasNumbers = /\d/.test(password);
-    const hasSymbols = /\W/.test(password);
-
-    this.isWeakPassword = false;
-    this.isMediumPassword = false;
-    this.isStrongPassword = false;
-
-    if (password.length < 8) {
-      this.isWeakPassword = true;
-    } else if (hasLetters && hasNumbers && hasSymbols) {
-      this.isStrongPassword = true;
-    } else {
-      this.isMediumPassword = true;
+  writeValue(value: any) {
+    if (value) {
+      this.form.patchValue(value);
+      const password = this.form.get('password')?.value;
+      this.passwordStrength = this.passwordStrengthService.getPasswordStrength(password);
     }
   }
 
+  registerOnChange(fn: any) {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any) {
+    this.onTouched = fn;
+  }
+
   isValidForm(): boolean {
-    return this.name.trim() !== '' && this.isStrongPassword;
+    return this.form.valid && this.passwordStrength === 'Strong';
   }
 
   showSuccess() {
     this.isFormSubmitted = true;
     setTimeout(() => {
       this.isFormSubmitted = false;
-      this.name = '';
-      this.password = '';
-      this.isWeakPassword = false;
-      this.isMediumPassword = false;
-      this.isStrongPassword = false;
+      this.form.reset();
+      this.passwordStrength = 'Weak';
+      this.onChange(this.form.value);
+      this.onTouched();
     }, 2000);
   }
 
+  private onChange: any = () => {
+  };
+
+  private onTouched: any = () => {
+  };
 }
