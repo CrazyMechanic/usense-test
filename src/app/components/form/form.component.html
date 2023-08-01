@@ -19,6 +19,7 @@
              [ngStyle]="{'color': form.get('password')?.value === '' ? 'gray' : '' }"
              class="strength-items">Easy
         </div>
+
         <div [ngClass]="{
               'red': passwordStrength === 'Short',
               'yellow': passwordStrength === 'Medium',
@@ -27,6 +28,7 @@
              [ngStyle]="{'color': form.get('password')?.value === '' ? 'gray' : '' }"
              class="strength-items">Medium
         </div>
+
         <div [ngClass]="{
               'red': passwordStrength === 'Short',
               'green': passwordStrength === 'Strong'
