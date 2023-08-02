@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-export type PasswordStrength = 'Short' | 'Weak' | 'Medium' | 'Strong';
+export type PasswordStrength = '' | 'Short' | 'Weak' | 'Medium' | 'Strong';
 
 @Injectable({
   providedIn: 'root',

@@ -61,7 +61,7 @@ export class FormComponent implements ControlValueAccessor {
     setTimeout(() => {
       this.isFormSubmitted = false;
       this.form.reset();
-      this.passwordStrength = 'Weak';
+      this.passwordStrength = '';
       this.onChange(this.form.value);
       this.onTouched();
     }, 2000);
