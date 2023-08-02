@@ -44,9 +44,8 @@ export class FormComponent implements ControlValueAccessor, OnInit {
   }
 
   ngOnInit() {
-    this.password?.valueChanges.subscribe((value) => {
+    this.password?.valueChanges.subscribe(() => {
       if (!this.password?.hasError('latinValidator')) {
-        // Удаляем ошибку, если значение поля содержит только латинские символы
         this.password?.setErrors(null);
       }
     });
