@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, OnInit } from '@angular/core';
 import { FORM_LABELS, FORM_PLACEHOLDERS, LATIN_CHARS_ONLY } from '../../shared/form-data';
 import {
   AbstractControl,
@@ -23,7 +23,7 @@ import { LatinCharsOnlyValidator } from '../../validators/custom-validator';
     },
   ],
 })
-export class FormComponent implements ControlValueAccessor {
+export class FormComponent implements ControlValueAccessor, OnInit {
   formLabels = FORM_LABELS;
   formPlaceholder = FORM_PLACEHOLDERS;
   formErrors: any = LATIN_CHARS_ONLY;
@@ -41,6 +41,15 @@ export class FormComponent implements ControlValueAccessor {
 
   get password(): AbstractControl {
     return this.form.controls['password'];
+  }
+
+  ngOnInit() {
+    this.password?.valueChanges.subscribe((value) => {
+      if (!this.password?.hasError('latinValidator')) {
+        // Удаляем ошибку, если значение поля содержит только латинские символы
+        this.password?.setErrors(null);
+      }
+    });
   }
 
   checkPasswordStrength() {
