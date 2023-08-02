@@ -1,7 +1,15 @@
 import { Component, forwardRef } from '@angular/core';
-import { FORM_LABELS, FORM_PLACEHOLDERS } from '../../shared/form-data';
-import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { FORM_LABELS, FORM_PLACEHOLDERS, LATIN_CHARS_ONLY } from '../../shared/form-data';
+import {
+  AbstractControl,
+  ControlValueAccessor,
+  FormControl,
+  FormGroup,
+  NG_VALUE_ACCESSOR,
+  Validators,
+} from '@angular/forms';
 import { PasswordStrength, PasswordStrengthService } from '../../services/password.strength.service';
+import { LatinCharsOnlyValidator } from '../../validators/custom-validator';
 
 @Component({
   selector: 'app-form',
@@ -18,6 +26,7 @@ import { PasswordStrength, PasswordStrengthService } from '../../services/passwo
 export class FormComponent implements ControlValueAccessor {
   formLabels = FORM_LABELS;
   formPlaceholder = FORM_PLACEHOLDERS;
+  formErrors: any = LATIN_CHARS_ONLY;
 
   form: FormGroup;
   isFormSubmitted: boolean = false;
@@ -26,8 +35,12 @@ export class FormComponent implements ControlValueAccessor {
   constructor(private passwordStrengthService: PasswordStrengthService) {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required),
+      password: new FormControl('', [Validators.required, LatinCharsOnlyValidator]),
     });
+  }
+
+  get password(): AbstractControl {
+    return this.form.controls['password'];
   }
 
   checkPasswordStrength() {

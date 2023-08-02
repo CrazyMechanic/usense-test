@@ -10,6 +10,9 @@
       <input (input)="checkPasswordStrength()" class="input" formControlName="password"
              id="password" placeholder="{{formPlaceholder.password}}" type="password">
 
+      <div *ngIf="password.invalid && (password.touched || password.dirty)"
+           class="invalid-feedback">{{formErrors.latinValidator}}</div>
+
       <div class="strength">
         <div [ngClass]="{
               'red': (passwordStrength === 'Short' || passwordStrength === 'Weak'),
